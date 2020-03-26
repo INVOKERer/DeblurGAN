@@ -1,7 +1,7 @@
 import numpy as np
 from math import ceil
 import matplotlib.pyplot as plt
-from motion_blur.generate_trajectory import Trajectory
+from generate_trajectory import Trajectory
 
 
 class PSF(object):

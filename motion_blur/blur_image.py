@@ -4,8 +4,8 @@ import cv2
 import os
 from scipy import signal
 from scipy import misc
-from motion_blur.generate_PSF import PSF
-from motion_blur.generate_trajectory import Trajectory
+from generate_PSF import PSF
+from generate_trajectory import Trajectory
 
 
 class BlurImage(object):
@@ -20,7 +20,7 @@ class BlurImage(object):
         """
         if os.path.isfile(image_path):
             self.image_path = image_path
-            self.original = misc.imread(self.image_path)
+            self.original = cv2.imread(self.image_path)
             self.shape = self.original.shape
             if len(self.shape) < 3:
                 raise Exception('We support only RGB images yet.')
@@ -62,7 +62,7 @@ class BlurImage(object):
                 blured[:, :, 1] = np.array(signal.fftconvolve(blured[:, :, 1], tmp, 'same'))
                 blured[:, :, 2] = np.array(signal.fftconvolve(blured[:, :, 2], tmp, 'same'))
                 blured = cv2.normalize(blured, blured, alpha=0, beta=1, norm_type=cv2.NORM_MINMAX, dtype=cv2.CV_32F)
-                blured = cv2.cvtColor(blured, cv2.COLOR_RGB2BGR)
+                # blured = cv2.cvtColor(blured, cv2.COLOR_RGB2BGR)
                 result.append(np.abs(blured))
         else:
             psf = psf[0]
@@ -74,7 +74,7 @@ class BlurImage(object):
             blured[:, :, 1] = np.array(signal.fftconvolve(blured[:, :, 1], tmp, 'same'))
             blured[:, :, 2] = np.array(signal.fftconvolve(blured[:, :, 2], tmp, 'same'))
             blured = cv2.normalize(blured, blured, alpha=0, beta=1, norm_type=cv2.NORM_MINMAX, dtype=cv2.CV_32F)
-            blured = cv2.cvtColor(blured, cv2.COLOR_RGB2BGR)
+            # blured = cv2.cvtColor(blured, cv2.COLOR_RGB2BGR)
             result.append(np.abs(blured))
         self.result = result
         if show or save:
@@ -108,8 +108,8 @@ class BlurImage(object):
 
 
 if __name__ == '__main__':
-    folder = '/Users/mykolam/PycharmProjects/University/DeblurGAN2/results_sharp'
-    folder_to_save = '/Users/mykolam/PycharmProjects/University/DeblurGAN2/blured'
+    folder = '/home/ubuntu/Downloads/DeblurGAN/datasets/trainB'
+    folder_to_save = '/home/ubuntu/Downloads/DeblurGAN/datasets/blured'
     params = [0.01, 0.009, 0.008, 0.007, 0.005, 0.003]
     for path in os.listdir(folder):
         print(path)
